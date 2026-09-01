@@ -3,10 +3,10 @@
 Security is cross-cutting.
 
 ## Identity
-- session/token controls,
-- MFA where applicable,
-- OIDC/SAML integration path for enterprise identity,
-- internal identity mapping.
+- session/token controls (HMAC-SHA256 JWT tokens using `JWT_SECRET_KEY` from `core/config.py`),
+- MFA extension point (`mfa_verified: bool`, `amr: ["pwd", "mfa"]` claims in JWT tokens),
+- Local password auth (bcrypt) for dev/demo mode alongside enterprise OIDC/SAML provider integration paths,
+- Internal identity mapping (`User.id` internal UUID with `external_identity_provider` and `external_identity_id`).
 
 ## Authorization
 Use layered controls:

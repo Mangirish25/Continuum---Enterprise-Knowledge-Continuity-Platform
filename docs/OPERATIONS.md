@@ -88,4 +88,39 @@ docker compose -f infra/compose/docker-compose.yml down -v
 - **MinIO S3 API**: `9000`
 - **MinIO Console**: `9001`
 
+## Database Migrations (Alembic)
+
+Database schema migrations are managed using Alembic. Never perform manual schema modifications in production-like environments (`docs/DATABASE.md` §9).
+
+### 1. Run Pending Migrations
+To bring a local or environment database up to the latest schema version:
+```bash
+alembic upgrade head
+```
+
+### 2. Roll Back Migrations
+To roll back the most recent migration by one step:
+```bash
+alembic downgrade -1
+```
+
+To roll back all migrations to a completely clean state:
+```bash
+alembic downgrade base
+```
+
+### 3. Generate a New Schema Migration
+When ORM models in `apps/api/app/repositories/models/` are updated, autogenerate a new migration script:
+```bash
+alembic revision --autogenerate -m "describe_your_change_here"
+```
+
+### 4. Reset Local Development Database
+To completely wipe and re-apply all migrations on a clean local database:
+```bash
+alembic downgrade base
+alembic upgrade head
+```
+
+
 

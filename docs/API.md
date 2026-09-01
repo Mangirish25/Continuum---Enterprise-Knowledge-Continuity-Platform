@@ -8,8 +8,49 @@ Use `/api/v1/...`.
 
 ### Auth
 - `POST /api/v1/auth/login`
+  - **Request**:
+    ```json
+    {
+      "email": "user@example.com",
+      "password": "secretpassword",
+      "organization_id": "optional-uuid"
+    }
+    ```
+  - **Response (200 OK)**:
+    ```json
+    {
+      "access_token": "eyJhbGciOi...",
+      "refresh_token": "eyJhbGciOi...",
+      "token_type": "bearer",
+      "expires_in": 3600
+    }
+    ```
 - `POST /api/v1/auth/refresh`
+  - **Request**:
+    ```json
+    {
+      "refresh_token": "eyJhbGciOi..."
+    }
+    ```
+  - **Response (200 OK)**:
+    ```json
+    {
+      "access_token": "eyJhbGciOi...",
+      "refresh_token": "eyJhbGciOi...",
+      "token_type": "bearer",
+      "expires_in": 3600
+    }
+    ```
 - `POST /api/v1/auth/logout`
+  - **Headers**: `Authorization: Bearer <access_token>`
+  - **Response (200 OK)**:
+    ```json
+    {
+      "status": "ok",
+      "message": "Successfully logged out."
+    }
+    ```
+
 
 ### Users
 - `GET /api/v1/users`
