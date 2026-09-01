@@ -35,7 +35,7 @@ _No dependencies — can start day one._
 ## Phase 2 — Database + migrations
 _Depends on phase 1 (docker/config)._
 
-- [ ] 2.1 — Sanmati — `apps/api/app/repositories/models/*.py` — ORM models: org, user, project, asset, handover, risk, audit_event
+- [x] 2.1 — Sanmati — `apps/api/app/repositories/models/*.py` — ORM models: org, user, project, asset, handover, risk, audit_event
 - [ ] 2.2 — Sanmati — `migrations/0001_initial_schema.py` — Alembic initial migration
 
 ## Phase 3 — Identity + org authorization
