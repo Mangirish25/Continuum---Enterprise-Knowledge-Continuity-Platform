@@ -48,7 +48,7 @@ _Depends on phase 2._
 _Depends on phase 3._
 
 - [ ] 4.1 — Sanmati — `apps/api/app/repositories/project_repository.py`
-- [x] 4.2 — Sanmati — `apps/api/app/repositories/asset_repository.py`
+- [ ] 4.2 — Sanmati — `apps/api/app/repositories/asset_repository.py`
 - [ ] 4.3 — Sanmati — `apps/api/app/api/v1/projects.py` — CRUD + ownership endpoints
 - [ ] 4.4 — Sanmati — `apps/api/app/api/v1/assets.py`
 
