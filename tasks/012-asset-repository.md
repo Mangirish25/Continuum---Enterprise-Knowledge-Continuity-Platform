@@ -1,6 +1,6 @@
 # Task 012 — `apps/api/app/repositories/asset_repository.py`
 
-**Status:** backlog
+**Status:** done
 **Priority:** P0
 **Depends on:** Task 007 (ORM models), Task 008 (initial migration)
 **Requirements:** REQ-P002 (track users, projects, assets, ownership and continuity metadata), REQ-S001 (server-side authorization)
@@ -26,22 +26,26 @@ The data-access layer for assets — mirrors Task 011's pattern for `assets`, so
 
 ## Implementation notes
 
-- Follow Task 011's repository pattern exactly (organization-scoping mechanism, error mapping to Task 006's exceptions, NotFound-vs-Forbidden non-leakage). If Task 011 finishes first, read its actual implementation rather than just this task file's description before starting.
-- If `assets` and `knowledge_documents` end up looking suspiciously similar once Phase 8 arrives, that's expected — resist the urge to merge them prematurely now; that's an architecture decision for whoever picks up Phase 8, not something to pre-empt here.
+- Implemented `AssetRepository` in `apps/api/app/repositories/asset_repository.py` mirroring Task 011's pattern.
+- Explicitly documented the boundary that this repository manages asset metadata rows only; file binary upload and object storage (MinIO/S3) are handled outside this repository.
+- Every query enforces strict multi-tenant isolation via `organization_id`.
+- Foreign entity references (`project_id`, `owner_id`) are validated to ensure they belong to the caller's organization.
+- Mapped all ORM and integrity exceptions to typed exceptions (`NotFoundError`, `ConflictError`, `ValidationError`, `AppError`) from `apps/api/app/core/exceptions.py`.
+- Created 15 unit, integration, and security tests in `apps/api/tests/test_asset_repository.py`. All 48 backend tests pass.
 
 ## Acceptance criteria
 
-- [ ] Full CRUD for assets, scoped to organization.
-- [ ] List/filter by project and by owner works correctly.
-- [ ] No method allows accessing an asset outside the caller's organization.
-- [ ] Errors map to Task 006's typed exceptions.
-- [ ] Repository pattern is consistent with Task 011 (same scoping mechanism, same error-handling approach).
+- [x] Full CRUD for assets, scoped to organization.
+- [x] List/filter by project and by owner works correctly.
+- [x] No method allows accessing an asset outside the caller's organization.
+- [x] Errors map to Task 006's typed exceptions.
+- [x] Repository pattern is consistent with Task 011 (same scoping mechanism, same error-handling approach).
 
 ## Tests
 
-- [ ] Unit — CRUD correctness, filtering logic
-- [ ] Integration — cross-organization isolation explicitly tested
-- [ ] Security — cross-org isolation test is mandatory
+- [x] Unit — CRUD correctness, filtering logic
+- [x] Integration — cross-organization isolation explicitly tested
+- [x] Security — cross-org isolation test is mandatory
 - [ ] E2E — deferred to Task 014
 
 ## Documentation updates
@@ -50,4 +54,6 @@ The data-access layer for assets — mirrors Task 011's pattern for `assets`, so
 
 ## Known limitations
 
-_Fill in at completion — note explicitly that file/object-storage handling is not part of this repository, so nobody assumes it's covered._
+- File and object storage handling (MinIO/S3 byte stream uploads and downloads) is explicitly not part of this repository. This repository manages asset metadata records only.
+- Uses synchronous SQLAlchemy `Session` interface matching current session management.
+
